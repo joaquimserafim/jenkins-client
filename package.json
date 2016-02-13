@@ -1,6 +1,6 @@
 {
   "name": "jenkins-client",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "a small client for jenkins",
   "main": "index.js",
   "files": [
@@ -15,7 +15,7 @@
     "coverage:open": "open reports/index.html",
     "lint": "jshint -c .jshintrc *.js",
     "style": "jscs *.js",
-    "complexity": "plato -r -t 'jenkins-client complexity and analize code report' -l .jshintrc -x 'node_modules|reports|test' -d reports/plato .",
+    "complexity": "plato -r -t 'jenkins-client code report' -l .jshintrc -x 'node_modules|reports|test' -d reports/plato .",
     "complexity:open": "open reports/plato/index.html"
   },
   "repository": {
