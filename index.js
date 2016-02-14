@@ -5,6 +5,10 @@ const request = require('superagent')
 module.exports = Client
 
 function Client (uri, user, pwd, job, socketConfig) {
+  if (!(this instanceof Client)) {
+    return new Client(uri, user, pwd, job, socketConfig)
+  }
+
   this._uri     = uri
   this._user    = user
   this._pwd     = pwd

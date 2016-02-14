@@ -35,7 +35,7 @@ describe('jenkins-client', function() {
 
   it('should throw an error if a timeout or fail connection happens',
     function(done) {
-      new Client(URI, user, pwd, jobName, {timeout: 500})
+      Client(URI, user, pwd, jobName, {timeout: 500})
         .info(function(err, statusCode) {
           expect(err).to.be.exists
           expect(statusCode).to.be.undefined
@@ -51,7 +51,7 @@ describe('jenkins-client', function() {
         .get('/job/' + jobName + '/api/json')
         .reply(500)
 
-      new Client(URI, user, pwd, jobName)
+      Client(URI, user, pwd, jobName)
         .info(function(err, statusCode) {
           expect(statusCode).to.be.equal(500)
           done()
@@ -64,7 +64,7 @@ describe('jenkins-client', function() {
       .get('/job/' + jobName + '/api/json')
       .reply(200, {})
 
-    new Client(URI, user, pwd, jobName)
+    Client(URI, user, pwd, jobName)
       .info(function(err, statusCode, body) {
         expect(err).to.be.null
         expect(statusCode).to.be.equal(200)
@@ -78,7 +78,7 @@ describe('jenkins-client', function() {
       .get('/job/' + jobName + '/1/consoleText')
       .reply(200, {})
 
-    new Client(URI, user, pwd, jobName)
+    Client(URI, user, pwd, jobName)
       .buildResult(1, function(err, statusCode, body) {
         expect(err).to.be.null
         expect(statusCode).to.be.equal(200)
@@ -90,7 +90,7 @@ describe('jenkins-client', function() {
   it('should return an error when executing a job `build` with a ' +
     'bad payload to be send',
     function(done) {
-      new Client(URI, user, pwd, jobName)
+      Client(URI, user, pwd, jobName)
         .buildResult('1', function(err, statusCode, body) {
           expect(err).to.be.exists
           expect(err.message).to.be.equal('"jobNumber" must be an integer!')
@@ -117,7 +117,7 @@ describe('jenkins-client', function() {
       .post('/job/' + jobName + '/build?delay=0sec', body)
       .reply(201)
 
-    new Client(URI, user, pwd, jobName)
+    Client(URI, user, pwd, jobName)
       .build(params2send, function(err, statusCode) {
         expect(err).to.be.null
         expect(statusCode).to.be.equal(201)
@@ -128,7 +128,7 @@ describe('jenkins-client', function() {
   it('should return an error when executing a job `build` with a ' +
     'bad payload to be send',
     function(done) {
-      new Client(URI, user, pwd, jobName)
+      Client(URI, user, pwd, jobName)
         .build({}, function(err, statusCode, body) {
           expect(err).to.be.exists
           expect(err.message).to.be.equal('"parameters" must be an array!')
