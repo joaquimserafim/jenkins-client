@@ -1,6 +1,6 @@
 {
   "name": "jenkins-client",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "a small client for jenkins",
   "main": "index.js",
   "files": [
@@ -29,6 +29,9 @@
     "utils",
     "continuous integration"
   ],
+  "engines" :{
+    "node": ">= 4.2"
+  },
   "author": "@joaquimserafim",
   "license": "ISC",
   "bugs": {
