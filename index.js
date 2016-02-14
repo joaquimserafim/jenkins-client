@@ -9,10 +9,10 @@ function Client (uri, user, pwd, job, socketConfig) {
   this._user    = user
   this._pwd     = pwd
   this._job     = job
-  this._timeout = socketConfig && socketConfig.timeout || 5000
+  this._timeout = socketConfig && socketConfig.timeout || 10000
 }
 
-Client.prototype.getStatus = function getStatus (cb) {
+Client.prototype.info = function info (cb) {
 
   request
     .get(this._uri + '/job/' + this._job + '/api/json')
@@ -21,7 +21,7 @@ Client.prototype.getStatus = function getStatus (cb) {
     .end(handler(cb))
 }
 
-Client.prototype.getResult = function getResult (jobNumber, cb) {
+Client.prototype.buildResult = function buildResult (jobNumber, cb) {
 
   if (!isInteger(jobNumber)) {
     cb(new Error('"jobNumber" must be an integer!'))

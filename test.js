@@ -36,7 +36,7 @@ describe('jenkins-client', function() {
   it('should throw an error if a timeout or fail connection happens',
     function(done) {
       new Client(URI, user, pwd, jobName, {timeout: 500})
-        .getStatus(function(err, statusCode) {
+        .info(function(err, statusCode) {
           expect(err).to.be.exists
           expect(statusCode).to.be.undefined
           done()
@@ -52,7 +52,7 @@ describe('jenkins-client', function() {
         .reply(500)
 
       new Client(URI, user, pwd, jobName)
-        .getStatus(function(err, statusCode) {
+        .info(function(err, statusCode) {
           expect(statusCode).to.be.equal(500)
           done()
         })
@@ -65,7 +65,7 @@ describe('jenkins-client', function() {
       .reply(200, {})
 
     new Client(URI, user, pwd, jobName)
-      .getStatus(function(err, statusCode, body) {
+      .info(function(err, statusCode, body) {
         expect(err).to.be.null
         expect(statusCode).to.be.equal(200)
         expect(body).to.be.an.object
@@ -79,7 +79,7 @@ describe('jenkins-client', function() {
       .reply(200, {})
 
     new Client(URI, user, pwd, jobName)
-      .getResult(1, function(err, statusCode, body) {
+      .buildResult(1, function(err, statusCode, body) {
         expect(err).to.be.null
         expect(statusCode).to.be.equal(200)
         expect(body).to.be.an.object
@@ -91,7 +91,7 @@ describe('jenkins-client', function() {
     'bad payload to be send',
     function(done) {
       new Client(URI, user, pwd, jobName)
-        .getResult('1', function(err, statusCode, body) {
+        .buildResult('1', function(err, statusCode, body) {
           expect(err).to.be.exists
           expect(err.message).to.be.equal('"jobNumber" must be an integer!')
           expect(statusCode).to.be.undefined
