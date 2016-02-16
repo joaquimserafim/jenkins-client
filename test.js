@@ -4,6 +4,7 @@
 const mocha = require('mocha')
 const nock = require('nock')
 const expect = require('chai').expect
+const Stream = require('stream').Stream
 
 const it = mocha.it
 const describe = mocha.describe
@@ -86,6 +87,19 @@ describe('jenkins-client', function() {
         done()
       })
   })
+
+  it('should return a 200 when getting the job `result` and return a stream',
+    function(done) {
+      scope = nock(URI)
+        .get('/job/' + jobName + '/1/consoleText')
+        .reply(200, {message: 'Hello World'})
+
+      var st = Client(URI, user, pwd, jobName).buildResult(1)
+      expect(st).to.be.an.instanceof(Stream)
+      st.on('end', done)
+      st.pipe(process.stdout)
+    }
+  )
 
   it('should return an error when executing a job `build` with a ' +
     'bad payload to be send',

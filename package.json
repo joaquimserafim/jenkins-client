@@ -1,6 +1,6 @@
 {
   "name": "jenkins-client",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "description": "a small client for jenkins",
   "main": "index.js",
   "files": [

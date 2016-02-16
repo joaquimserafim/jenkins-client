@@ -43,7 +43,22 @@ returns the output from the build
     - *statusCode* an integer, the returning status code
     - *payload* a string but ... depends of the the job output 
 
+`buildResult` can return a stream and allows you to pipe data from the request
 
+```js
+var st = Client(URI, user, pwd, jobName).buildResult(1)
+st.on('end', end)
+st.on('error', error)
+
+st.pipe(process.stdout)
+
+// or using the event `data`
+st.on('data', data)
+
+```
+
+
+##### example
 ```js
 var JenkinsClient = require('jenkins-client')
 

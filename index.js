@@ -25,17 +25,28 @@ Client.prototype.info = function info (cb) {
     .end(handler(cb))
 }
 
+//
+// if pass a `callback` then should use the superagent `end` method
+// to retrieve the data or should return a stream where the client
+// can pipe and listen for events
+//
+
 Client.prototype.buildResult = function buildResult (jobNumber, cb) {
 
   if (!isInteger(jobNumber)) {
     cb(new Error('"jobNumber" must be an integer!'))
   }
 
-  request
+  var req = request
     .get(this._uri + '/job/' + this._job + '/' + jobNumber + '/consoleText')
     .timeout(this._timeout)
     .auth(this._user, this._pwd)
-    .end(handler(cb))
+
+  if (!cb) {
+    return req
+  }
+
+  req.end(handler(cb))
 }
 
 Client.prototype.build = function build (parameters, cb) {
