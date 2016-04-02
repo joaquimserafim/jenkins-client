@@ -8,7 +8,7 @@ a simple NodeJS client for jenkins
 
 ## API
 
-### jenkins-client(uri, user, pwd, jobName, [, socketOptions])
+#### jenkins-client(uri, user, pwd, jobName, [, socketOptions])
 
 * **uri** string, the URI for your jenkins server
 * **user** string, the user to access jenkins
