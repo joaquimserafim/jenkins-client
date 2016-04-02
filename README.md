@@ -69,7 +69,7 @@ JenkinsClient.info(getInfo)
 
 function getInfo (err, statusCode, payload) {
     // err - something went wrong
-    // statusCode - theh http returning status code
+    // statusCode - the http returning status code
     // the JSON payload from your jenkins server
 }
 ```
