@@ -65,7 +65,7 @@ var JenkinsClient = require('jenkins-client')
 
 var jobX = JenkinsClient(uri, user, pwd, jobName[, socketOptions])
 
-JenkinsClient.info(getInfo)
+jobX.info(getInfo)
 
 function getInfo (err, statusCode, payload) {
     // err - something went wrong
