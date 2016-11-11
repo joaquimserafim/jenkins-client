@@ -1,6 +1,6 @@
 {
   "name": "jenkins-client",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "a small client for jenkins",
   "main": "index.js",
   "files": [
@@ -9,14 +9,9 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha test.js",
-    "coverage": "istanbul --include-all-sources cover _mocha",
-    "coverage:check": "npm run coverage && istanbul check-coverage",
-    "coverage:open": "open reports/index.html",
-    "lint": "jshint -c .jshintrc *.js",
-    "style": "jscs *.js",
-    "complexity": "plato -r -t 'jenkins-client code report' -l .jshintrc -x 'node_modules|reports|test' -d reports/plato .",
-    "complexity:open": "open reports/plato/index.html"
+    "coverage": "open coverage/lcov-report/index.html",
+    "coverage:check": "istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
+    "test": "standard --fix && istanbul cover _mocha test.js"
   },
   "repository": {
     "type": "git",
@@ -29,8 +24,8 @@
     "utils",
     "continuous integration"
   ],
-  "engines" :{
-    "node": ">= 4.2"
+  "engines": {
+    "node": ">=6.1"
   },
   "author": "@joaquimserafim",
   "license": "ISC",
@@ -40,20 +35,17 @@
   "homepage": "https://github.com/joaquimserafim/jenkins-client",
   "devDependencies": {
     "chai": "^3.5.0",
-    "istanbul": "^0.4.2",
-    "jscs": "^2.9.0",
-    "jshint": "^2.9.1",
-    "mocha": "^2.4.5",
-    "nock": "^7.0.2",
-    "plato": "^1.5.0",
-    "pre-commit": "^1.1.2"
+    "istanbul": "0.4.5",
+    "mocha": "^2.5.3",
+    "nock": "^7.7.3",
+    "plato": "^1.7.0",
+    "pre-commit": "^1.1.3",
+    "standard": "^8.5.0"
   },
   "dependencies": {
     "superagent": "^1.7.2"
   },
   "pre-commit": [
-    "lint",
-    "style",
     "test",
     "coverage:check"
   ]

@@ -1,19 +1,25 @@
+/*
+eslint
+no-multi-spaces: ["error", {exceptions: {"VariableDeclarator": true}}]
+padded-blocks: ["error", {"classes": "always"}]
+max-len: ["error", 80]
+*/
 'use strict'
 
 const request = require('superagent')
 
 module.exports = Client
 
-function Client (uri, user, pwd, job, socketConfig) {
+function Client (uri, user, pwd, job, socketConfig = {timeout: 10000}) {
   if (!(this instanceof Client)) {
     return new Client(uri, user, pwd, job, socketConfig)
   }
 
-  this._uri     = uri
-  this._user    = user
-  this._pwd     = pwd
-  this._job     = job
-  this._timeout = socketConfig && socketConfig.timeout || 10000
+  this._uri = uri
+  this._user = user
+  this._pwd = pwd
+  this._job = job
+  this._timeout = socketConfig.timeout
 }
 
 Client.prototype.info = function info (cb) {
@@ -32,7 +38,6 @@ Client.prototype.info = function info (cb) {
 //
 
 Client.prototype.buildResult = function buildResult (jobNumber, cb) {
-
   if (!isInteger(jobNumber)) {
     cb(new Error('"jobNumber" must be an integer!'))
   }
@@ -42,11 +47,7 @@ Client.prototype.buildResult = function buildResult (jobNumber, cb) {
     .timeout(this._timeout)
     .auth(this._user, this._pwd)
 
-  if (!cb) {
-    return req
-  }
-
-  req.end(handler(cb))
+  return !cb ? req : req.end(handler(cb))
 }
 
 Client.prototype.build = function build (parameters, cb) {

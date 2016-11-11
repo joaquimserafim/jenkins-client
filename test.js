@@ -1,14 +1,19 @@
+/*
+eslint
+no-multi-spaces: ["error", {exceptions: {"VariableDeclarator": true}}]
+padded-blocks: ["error", {"classes": "always"}]
+max-len: ["error", 80]
+*/
 'use strict'
-/*jshint -W030*/
 
-const mocha = require('mocha')
-const nock = require('nock')
-const expect = require('chai').expect
-const Stream = require('stream').Stream
+const mocha   = require('mocha')
+const nock    = require('nock')
+const expect  = require('chai').expect
+const Stream  = require('stream').Stream
 
-const it = mocha.it
-const describe = mocha.describe
-const before = mocha.before
+const it        = mocha.it
+const describe  = mocha.describe
+const before    = mocha.before
 const afterEach = mocha.afterEach
 
 const Client = require('./')
@@ -20,24 +25,27 @@ const pwd     = 'B26354'
 
 var scope
 
-describe('jenkins-client', function() {
+describe('jenkins-client', () => {
 
-  before(function(done) {
+  before((done) => {
     nock.disableNetConnect()
     done()
   })
 
-  afterEach(function(done) {
-    if (scope) {
-      expect(scope.isDone()).to.be.true
-    }
+  afterEach((done) => {
+    scope && expect(scope.isDone()).to.be.true
     done()
   })
 
   it('should throw an error if a timeout or fail connection happens',
-    function(done) {
-      Client(URI, user, pwd, jobName, {timeout: 500})
-        .info(function(err, statusCode) {
+    (done) => {
+      scope = nock(URI)
+        .get('/job/' + jobName + '/api/json')
+        .delay({head: 200})
+        .reply(200)
+
+      Client(URI, user, pwd, jobName, {timeout: 100})
+        .info((err, statusCode) => {
           expect(err).to.be.exists
           expect(statusCode).to.be.undefined
           done()
@@ -47,26 +55,27 @@ describe('jenkins-client', function() {
 
   it('should throw the corresponding statusCode when jenkins server ' +
     'returns an error',
-    function(done) {
+    (done) => {
       scope = nock(URI)
         .get('/job/' + jobName + '/api/json')
         .reply(500)
 
       Client(URI, user, pwd, jobName)
-        .info(function(err, statusCode) {
+        .info((err, statusCode) => {
+          expect(err).to.exists
           expect(statusCode).to.be.equal(500)
           done()
         })
     }
   )
 
-  it('should return a 200 when getting the job `status`', function(done) {
+  it('should return a 200 when getting the job `status`', (done) => {
     scope = nock(URI)
       .get('/job/' + jobName + '/api/json')
       .reply(200, {})
 
     Client(URI, user, pwd, jobName)
-      .info(function(err, statusCode, body) {
+      .info((err, statusCode, body) => {
         expect(err).to.be.null
         expect(statusCode).to.be.equal(200)
         expect(body).to.be.an.object
@@ -74,13 +83,13 @@ describe('jenkins-client', function() {
       })
   })
 
-  it('should return a 200 when getting the job `result`', function(done) {
+  it('should return a 200 when getting the job `result`', (done) => {
     scope = nock(URI)
       .get('/job/' + jobName + '/1/consoleText')
       .reply(200, {})
 
     Client(URI, user, pwd, jobName)
-      .buildResult(1, function(err, statusCode, body) {
+      .buildResult(1, (err, statusCode, body) => {
         expect(err).to.be.null
         expect(statusCode).to.be.equal(200)
         expect(body).to.be.an.object
@@ -89,7 +98,7 @@ describe('jenkins-client', function() {
   })
 
   it('should return a 200 when getting the job `result` and return a stream',
-    function(done) {
+    (done) => {
       scope = nock(URI)
         .get('/job/' + jobName + '/1/consoleText')
         .reply(200, {message: 'Hello World'})
@@ -103,9 +112,9 @@ describe('jenkins-client', function() {
 
   it('should return an error when executing a job `build` with a ' +
     'bad payload to be send',
-    function(done) {
+    (done) => {
       Client(URI, user, pwd, jobName)
-        .buildResult('1', function(err, statusCode, body) {
+        .buildResult('1', (err, statusCode, body) => {
           expect(err).to.be.exists
           expect(err.message).to.be.equal('"jobNumber" must be an integer!')
           expect(statusCode).to.be.undefined
@@ -115,7 +124,7 @@ describe('jenkins-client', function() {
     }
   )
 
-  it('should return a 200 when executing a job `build`', function(done) {
+  it('should return a 200 when executing a job `build`', (done) => {
     var params2send = [
       {name: 'param1', value: 'value1'},
       {name: 'param2', value: 'value2'},
@@ -132,7 +141,7 @@ describe('jenkins-client', function() {
       .reply(201)
 
     Client(URI, user, pwd, jobName)
-      .build(params2send, function(err, statusCode) {
+      .build(params2send, (err, statusCode) => {
         expect(err).to.be.null
         expect(statusCode).to.be.equal(201)
         done()
@@ -141,9 +150,9 @@ describe('jenkins-client', function() {
 
   it('should return an error when executing a job `build` with a ' +
     'bad payload to be send',
-    function(done) {
+    (done) => {
       Client(URI, user, pwd, jobName)
-        .build({}, function(err, statusCode, body) {
+        .build({}, (err, statusCode, body) => {
           expect(err).to.be.exists
           expect(err.message).to.be.equal('"parameters" must be an array!')
           expect(statusCode).to.be.undefined

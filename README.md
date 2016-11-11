@@ -4,7 +4,10 @@ a simple NodeJS client for jenkins
 
 <a href="https://nodei.co/npm/jenkins-client/"><img src="https://nodei.co/npm/jenkins-client.png?downloads=true"></a>
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)](https://travis-ci.org/joaquimserafim/jenkins-client)![Code Coverage 100%](https://img.shields.io/badge/code%20coverage-100%25-green.svg?style=flat-square)[![ISC License](https://img.shields.io/badge/license-ISC-blue.svg?style=flat-square)](https://github.com/joaquimserafim/jenkins-client/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)](https://travis-ci.org/joaquimserafim/jenkins-client)![Code Coverage 100%](https://img.shields.io/badge/code%20coverage-100%25-green.svg?style=flat-square)[![ISC License](https://img.shields.io/badge/license-ISC-blue.svg?style=flat-square)](https://github.com/joaquimserafim/jenkins-client/blob/master/LICENSE)[![NodeJS](https://img.shields.io/badge/node-6.1.x-brightgreen.svg?style=flat-square)](https://github.com/joaquimserafim/get-loadavg/blob/master/package.json#L28)
+
+[![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+
 
 ## API
 
@@ -43,7 +46,7 @@ returns the output from the build
     - *statusCode* an integer, the returning status code
     - *payload* a string but ... depends of the the job output 
 
-`buildResult` can return a stream and allows you to pipe data from the request
+`buildResult` can return a stream and allows you to pipe the data from the request, the best option
 
 ```js
 var st = Client(URI, user, pwd, jobName).buildResult(1)
@@ -54,7 +57,6 @@ st.pipe(process.stdout)
 
 // or using the event `data`
 st.on('data', data)
-
 ```
 
 
@@ -74,42 +76,4 @@ function getInfo (err, statusCode, payload) {
 }
 ```
 
-### Development
-
-##### this projet has been set up with a precommit that forces you to follow a code style, no jshint issues and 100% of code coverage before commit
-
-
-to run test
-```js
-npm test
-```
-
-to run jshint
-```js
-npm run lint
-```
-
-to run code style
-```js
-npm run style
-```
-
-to run check code coverage
-```js
-npm run coverage:check
-```
-
-to open the code coverage report
-```js
-npm run coverage:open
-```
-
-to run the source complexity tool
-```js
-npm run complexity
-```
-
-to open the complexity report
-```js
-npm run complexity:open
-```
+### ISC License
